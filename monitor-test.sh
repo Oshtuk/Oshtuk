@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROCESS_NAME="test"
-LOG_FILE="/var/log/monitoring.log"
+LOG_FILE="$HOME/monitoring.log"
 URL="https://test.com/monitoring/test/api"
 LAST_PID_FILE="/tmp/.last_test_pid"
 
