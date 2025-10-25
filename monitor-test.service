@@ -1,10 +1,10 @@
 [Unit]
-Description=Monitor test process
+Description=Monitor and restart 'test' process if needed
 After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/home/dispatch/Oshtuk/monitor-test.sh
+ExecStart=/usr/local/bin/monitor_test.sh
 
 [Install]
 WantedBy=multi-user.target
