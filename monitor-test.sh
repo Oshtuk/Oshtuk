@@ -1,26 +1,14 @@
 #!/bin/bash
 
-PROCESS_NAME="test"
-LOG_FILE="$HOME/monitoring.log"
-URL="https://test.com/monitoring/test/api"
-LAST_PID_FILE="/tmp/.last_test_pid"
+LOGFILE="/var/log/monitoring.log"
+PROCESS="test"
+TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
 
-PID=$(pgrep -x "$PROCESS_NAME")
+status=$(systemctl is-active "$PROCESS")
 
-if [ -z "$PID" ]; then
-    exit 0
-fi
-
-if [ -f "$LAST_PID_FILE" ]; then
-    LAST_PID=$(cat "$LAST_PID_FILE")
-    if [ "$LAST_PID" != "$PID" ]; then
-        echo "$(date '+%Y-%m-%d %H:%M:%S') Process $PROCESS_NAME restarted. Old PID: $LAST_PID, New PID: $PID" >> "$LOG_FILE"
-    fi
-fi
-
-echo "$PID" > "$LAST_PID_FILE"
-
-curl -s --connect-timeout 5 --max-time 10 "$URL" > /dev/null
-if [ $? -ne 0 ]; then
-    echo "$(date '+%Y-%m-%d %H:%M:%S') Server $URL is not available." >> "$LOG_FILE"
+if [ "$status" = "active" ]; then
+    echo "$TIMESTAMP - $PROCESS is running" >> "$LOGFILE"
+else
+    echo "$TIMESTAMP - $PROCESS was stopped or failed, restarting..." >> "$LOGFILE"
+    systemctl restart "$PROCESS"
 fi
