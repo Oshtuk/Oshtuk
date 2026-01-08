@@ -1,4 +1,4 @@
-# Oshtuk — Monitoring Script
+# Monitoring Script
 
 Мониторинг процесса `test` с логированием и HTTPS-запросом.
 
